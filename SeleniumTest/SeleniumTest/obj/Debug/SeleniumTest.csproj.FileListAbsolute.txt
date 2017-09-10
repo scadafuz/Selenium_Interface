@@ -1,0 +1,14 @@
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\SeleniumTest.exe
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\SeleniumTest.pdb
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\Selenium.WebDriverBackedSelenium.pdb
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\Selenium.WebDriverBackedSelenium.xml
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\WebDriver.pdb
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\WebDriver.xml
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\WebDriver.Support.pdb
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\bin\Debug\WebDriver.Support.xml
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\Debug\SeleniumTest.csprojResolveAssemblyReference.cache
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\Debug\SeleniumTest.MainForm.resources
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\Debug\SeleniumTest.SearchObject.resources
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\Debug\SeleniumTest.csproj.GenerateResource.Cache
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\Debug\SeleniumTest.exe
+C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\Debug\SeleniumTest.pdb

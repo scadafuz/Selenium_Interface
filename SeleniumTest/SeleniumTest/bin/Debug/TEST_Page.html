@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p><h1>Imagem</h1></p>
+<img onmouseover="bigImg(this)" onmouseout="normalImg(this)" border="0" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Smiley" width="32" height="32">
+
+<p><h1>CheckBox</h1></p>
+<input type="checkbox" name="vehicle" value="Bike">I have a bike<br>
+<input type="checkbox" name="vehicle" value="Car">I have a car 
+
+<P><h1><Lista></h1></p>
+<select name="select2" size="3">
+  <option>cherry</option>
+  <option>orange</option>
+  <option>apple</option>
+</select>
+
+<select name="select">
+  <option>cherry</option>
+  <option>orange</option>
+  <option>apple</option>
+</select>
+
+<P><h1>Radio</h1></P>
+<label>Choix 1
+<input type="radio" name="myradio" value="radio1">
+</label><br>
+<label>Choix 2
+<input type="radio" name="myradio" value="radio2">
+</label>
+
+<P><h1>Text Area</h1></P>
+
+<textarea name="textarea">content</textarea>
+
+<P><h1>Button</h1></P>
+<input type="button" value="Send" onclick="myfunction()">
+
+
+<div id="wrap">
+		<p><h1>Inputs</h1></p>
+		<form action=".">
+			<div class="text">
+				<label for="type-text">Text (text)</label>
+				<input type="text" name="type-text" id="type-text">
+			</div>
+			<div class="text">
+				<label for="type-search">Search (search)</label>
+				<input type="search" name="type-search" id="type-search">
+			</div>
+			<div class="text">
+				<label for="type-tel">Telephone (tel)</label>
+				<input type="tel" name="type-tel" id="type-tel">
+			</div>
+			<div class="text">
+				<label for="type-url">URL (url)</label>
+				<input type="url" name="type-url" id="type-url">
+			</div>
+			<div class="text">
+				<label for="type-email">E-mail (email)</label>
+				<input type="email" name="type-email" id="type-email">
+			</div>
+			<div class="text">
+				<label for="type-datetime">Date and Time (datetime)</label>
+				<input type="datetime" name="type-datetime" id="type-datetime">
+			</div>
+			<div class="text">
+				<label for="type-date">Date (date)</label>
+				<input type="date" name="type-date" id="type-date">
+			</div>
+			<div class="text">
+				<label for="type-month">Month (month)</label>
+				<input type="month" name="type-month" id="type-month">
+			</div>
+			<div class="text">
+				<label for="type-week">Week (week)</label>
+				<input type="week" name="type-week" id="type-week">
+			</div>
+			<div class="text">
+				<label for="type-time">Time (time)</label>
+				<input type="time" name="type-time" id="type-time">
+			</div>
+			<div class="text">
+				<label for="type-datetime-local">Local Date and Time (datetime-local)</label>
+				<input type="datetime-local" name="type-datetime-local" id="type-datetime-local">
+			</div>
+			<div class="text">
+				<label for="type-number">Number (number)</label>
+				<input type="number" name="type-number" id="type-number" min="0" max="20">
+			</div>
+			<div class="text">
+				<label for="type-range">Range (range)</label>
+				<input type="range" name="type-range" id="type-range" min="0" max="100">
+			</div>
+			<div class="text">
+				<label for="type-color">Colour (color)</label>
+				<input type="color" name="type-color" id="type-color">
+			</div>
+			<div class="submit-area">
+				<input type="submit" value="Submit" name="submit-1">
+			</div>
+		</form>	
+</div>
+
+<P><h1>Link</h1></P>
+<p><a href="/lab/">Link</a></p>
+
+
+<script>
+function bigImg(x) {
+    x.style.height = "64px";
+    x.style.width = "64px";
+}
+
+function normalImg(x) {
+    x.style.height = "32px";
+    x.style.width = "32px";
+}
+</script>
+
+</body>
+</html>
