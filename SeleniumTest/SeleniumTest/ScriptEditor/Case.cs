@@ -23,6 +23,9 @@ namespace SeleniumTest
 		public string Purpose{ get; set; }
 		public string PreCondition{ get; set; }
 		public string PosCondition{ get; set; }
+		[XmlIgnore]
+        [Browsable(false)]
+		public string LastSumary{ get; set; }
         [XmlIgnore]
         [Browsable(false)]
 		public Run LastRun{ get; set; }
@@ -45,11 +48,10 @@ namespace SeleniumTest
             LastRun = new Run(this);
         }
 		public void execute(){
-            if(ReferenceEquals(LastRun,null)) LastRun = new Run(this);
-
+           if(ReferenceEquals(LastRun,null)) LastRun = new Run(this);
 
             LastRun.execute();
-			 	
+			LastSumary=LastRun.Reporter.report.htmlPath;	
 		
 		}
 		

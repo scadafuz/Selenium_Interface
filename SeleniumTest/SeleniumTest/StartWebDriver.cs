@@ -103,7 +103,7 @@ namespace SeleniumTest
 					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("if (typeof mapearOut!='function') {mapearOut= function () {  if( typeof(event.target.getAttribute('executiondomain'))=='object'){event.target.style.outline='0px outset #000000'; } }}");
 					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("if (typeof mapearClick!='function') {mapearClick = function()  {  event.preventDefault(); event.stopPropagation();  var ExecutionDomain = document.createAttribute('executiondomain');    ExecutionDomain.value = 'true';   event.toElement.setAttributeNode(ExecutionDomain); event.target.style.outline='4px solid #FF0000'; }  }");
 					
-					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("window.addEventListener('click', mapearClick);");
+					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("window.addEventListener('click', mapearClick,true);");
 					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("window.addEventListener('mouseover', mapearOver);");
 					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("window.addEventListener('mouseout', mapearOut);");
 
@@ -119,13 +119,16 @@ namespace SeleniumTest
 			foreach(string handle in driver.WindowHandles){
 			    driver.SwitchTo().Window(handle);
 				driver.SwitchTo().DefaultContent();
+				
 				try{
-					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("var highlightElement=arguments[0];  highlight=function(a){ count = 1; a.style.outline='0px outset #FF0000';    var intervalId = setInterval(function() {        if (a.style.outline.includes('0px')) {            a.style.outline = '5px outset #FF0000';            if (count++ === 5) {                clearInterval(intervalId);   a.style.outline = '0px outset #FF0000';         }        } else {            a.style.outline = '0px outset #FF0000';        }        }, 200)};highlight(highlightElement);  ",(IWebElement)e.getElemento());
+					IWebElement el=(IWebElement)e.getElemento();
+					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("var highlightElement=arguments[0];  highlight=function(a){ count = 1; a.style.outline='0px outset #FF0000';    var intervalId = setInterval(function() {        if (a.style.outline.includes('0px')) {            a.style.outline = '5px outset #FF0000';            if (count++ === 5) {                clearInterval(intervalId);   a.style.outline = '0px outset #FF0000';         }        } else {            a.style.outline = '0px outset #FF0000';        }        }, 200)};highlight(highlightElement);  ",el);
 			//((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("highlight=function(){ count = 1; a=arguments[0]; a.style.outline='0px outset #FF0000';    var intervalId = setInterval(function() {        if (a.style.outline.includes('0px')) {            clearInterval(intervalId);               }        }, 200)};highlight();",(IWebElement)e.Elemento);
 						saida=true;	
 						break;
 					}
 				catch(Exception){
+					
 				}
 			}
 		   return saida;
@@ -151,7 +154,7 @@ namespace SeleniumTest
 					
 					
 					e.getContext(driver);
-					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("if (typeof mapearClick=='function') {window.removeEventListener('click', mapearClick);}");
+					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("if (typeof mapearClick=='function') {window.removeEventListener('click', mapearClick,true);}");
 					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("if (typeof mapearOver=='function') {window.removeEventListener('mouseover',mapearOver);}");
 					((IJavaScriptExecutor)e.getContext(driver)).ExecuteScript("if (typeof mapearOut=='function') {window.removeEventListener('mouseout',mapearOut);}");
 					

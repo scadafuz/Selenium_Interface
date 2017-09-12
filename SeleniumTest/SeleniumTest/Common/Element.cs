@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 using OpenQA.Selenium;
@@ -29,12 +30,16 @@ namespace SeleniumTest
 		public RemoteWebElement Elemento;
 		public string xpath_;
 		public string CSSSelector_;
+		public string xpath_id;
+		public string CSSSelector_id;
 		public Element(RemoteWebElement Elemento, ArrayList frameSequence,string WindowHandle)
 		{
 			this.frameSequence=frameSequence;
 			this.Elemento=Elemento;
 			xpath_=GetElementXPath(Elemento);
 			CSSSelector_=GetElementCSSSelector(Elemento);
+			xpath_id=GetElementXPathID(Elemento);
+			CSSSelector_id=GetElementCSSSelectorID(Elemento);
 		}
 		/*	public Element(ArrayList frameSequence,string WindowHandle){
 			
@@ -73,6 +78,47 @@ namespace SeleniumTest
 					"        var path = [];"+
 					"        while (el.nodeType === Node.ELEMENT_NODE) {"+
 					"            var selector = el.nodeName.toLowerCase();"+
+					//"            if (el.id) {"+
+					//"                selector += '#' + el.id;"+
+					//"                path.unshift(selector);"+
+					//"                break;"+
+					//"            } else {"+
+					"                var sib = el, nth = 1;"+
+					"                while (sib = sib.previousElementSibling) {"+
+					"                    if (sib.nodeName.toLowerCase() == selector)"+
+					"                       nth++;"+
+					//	"                }"+
+					"                if (nth != 1)"+
+					"                    selector += ':nth-of-type('+nth+')';"+
+					"            }"+
+					"            path.unshift(selector);"+
+					"            el = el.parentNode;"+
+					"        }"+
+					"        return path.join(' > ');"+
+					"     };"+
+
+					"return getCSSPath(arguments[0]);", element);
+				
+			}
+			catch(Exception ){
+				
+			}
+			return Regex.Replace(saida,".*> aside[^>]+>","");
+		}
+		
+		
+		
+		public String GetElementCSSSelectorID(IWebElement element)
+		{
+			string saida="";
+			try{
+				saida= (String) ((IJavaScriptExecutor) Util.StartWebDriver.getDriver()).ExecuteScript(
+					" getCSSPath = function(el) {"+
+					"        if (!(el instanceof Element)) "+
+					"            return;"+
+					"        var path = [];"+
+					"        while (el.nodeType === Node.ELEMENT_NODE) {"+
+					"            var selector = el.nodeName.toLowerCase();"+
 					"            if (el.id) {"+
 					"                selector += '#' + el.id;"+
 					"                path.unshift(selector);"+
@@ -98,9 +144,59 @@ namespace SeleniumTest
 			catch(Exception ){
 				
 			}
+			return Regex.Replace(saida,".*> aside[^>]+>","");
+		}
+		
+		public String GetElementXPath(IWebElement element)
+		{
+			
+			string saida="";
+			try{
+				saida= (String) ((IJavaScriptExecutor) Util.StartWebDriver.getDriver()).ExecuteScript(
+					"getXPath=function(node)" +
+					"{" +
+					//	"if (node.id !== '')" +
+					//	"{" +
+					//	"return '//' + node.tagName.toLowerCase() + '[@id=\"' + node.id + '\"]'" +
+					//	"}" +
+					
+					"if (node === document.body)" +
+					"{" +
+					"return node.tagName.toLowerCase()" +
+					"}" +
+					
+					"var nodeCount = 0;" +
+					"var childNodes = node.parentNode.childNodes;" +
+					
+					"for (var i=0; i<childNodes.length; i++)" +
+					"{" +
+					"var currentNode = childNodes[i];" +
+					
+					"if (currentNode === node)" +
+					"{" +
+					"return getXPath(node.parentNode) + '/' + node.tagName.toLowerCase() + '[' + (nodeCount+1) + ']'" +
+					"}" +
+					
+					"if (currentNode.nodeType === 1 && " +
+					"currentNode.tagName.toLowerCase() === node.tagName.toLowerCase())" +
+					"{" +
+					"nodeCount++" +
+					"}" +
+					"}" +
+					"};" +
+					
+					"return getXPath(arguments[0]);", element);
+				
+			}
+			catch(Exception ){
+				
+			}
 			return saida;
 		}
-		public String GetElementXPath(IWebElement element)
+		
+		
+		
+		public String GetElementXPathID(IWebElement element)
 		{
 			
 			string saida="";
@@ -147,14 +243,33 @@ namespace SeleniumTest
 			return saida;
 		}
 		
+		
+		
+		//nao coloca try and catch
 		public RemoteWebElement getElemento(){
 			
 			IWebDriver driveru=(getContext(Util.StartWebDriver.getDriver()));
-			var els=driveru.FindElements(By.XPath(xpath_));
+			var els=driveru.FindElements(By.XPath(xpath_id));
 			if(els.Count==0){
-				els=driveru.FindElements(By.CssSelector(CSSSelector_));
+				els=driveru.FindElements(By.CssSelector(CSSSelector_id));
 				if(els.Count!=0){
 					this.Elemento= (RemoteWebElement)els[0];
+				}
+				else{
+					els=driveru.FindElements(By.XPath(xpath_));
+					if(els.Count==0){
+						els=driveru.FindElements(By.CssSelector(CSSSelector_));
+						if(els.Count!=0){
+							this.Elemento= (RemoteWebElement)els[0];
+						}
+						else{
+							
+							throw new Exception("Elemento não encontrado");
+						}
+					}
+					else{
+						this.Elemento= (RemoteWebElement)els[0];
+					}
 				}
 			}
 			else{

@@ -79,11 +79,11 @@ namespace SeleniumTest
 		{
 			
 			this.Element=Campo;
-		
+			
 			this.xpath=Campo.xpath_;
 			
-		//	this.driver=Campo.Elemento.WrappedDriver;
-	
+			//	this.driver=Campo.Elemento.WrappedDriver;
+			
 			
 			int value_=0;
 			try{
@@ -103,14 +103,14 @@ namespace SeleniumTest
 			}
 			
 			//this.WindowHandle=Util.StartWebDriver.getDriver().CurrentWindowHandle;
-		
+			
 			this.TypeField_=this.Element.getElemento().GetAttribute("type");
 
 		}
 		
 		public void RefreshObject(){
-		//	IWebDriver u=(this.Element.getContext(Util.StartWebDriver.getDriver()));
-		//	IWebElement e=u.FindElement(By.XPath(xpath));
+			//	IWebDriver u=(this.Element.getContext(Util.StartWebDriver.getDriver()));
+			//	IWebElement e=u.FindElement(By.XPath(xpath));
 			this.Element.getElemento();
 
 		}
@@ -127,95 +127,104 @@ namespace SeleniumTest
 
 		}
 		public Util.status FieldSet(string massa,MetodoOptions.Metodo Metodo,bool validaSize=false){
-			
-			if(FieldExist()){
-				if(Metodo==MetodoOptions.Metodo.SendKey){
-					
-					if ("^~¨´`".Contains(massa)){
-						if (StartWebDriver.handle==GetForegroundWindow()){
-							
-							if(massa=="^"){
-								TranferAreaCopy(massa);
-								if (StartWebDriver.handle==GetForegroundWindow()){
-									SendKeys.SendWait("^v");
+			try{
+				if(FieldExist()){
+					if(Metodo==MetodoOptions.Metodo.SendKey){
+						
+						if ("^~¨´`".Contains(massa)){
+							if (StartWebDriver.handle==GetForegroundWindow()){
+								
+								if(massa=="^"){
+									TranferAreaCopy(massa);
+									if (StartWebDriver.handle==GetForegroundWindow()){
+										SendKeys.SendWait("^v");
+									}
+									else{
+										
+										return Util.status.warning;
+									}
+									
 								}
 								else{
 									
-									return Util.status.warning;
+									SendKeys.SendWait("{"+massa+" 2}");
+									if(this.Element.getElemento().GetAttribute("value").Length>1){
+										this.Element.getElemento().SendKeys(OpenQA.Selenium.Keys.Backspace);
+										
+									}
+									this.Element.getElemento().SendKeys("");
 								}
-								
 							}
 							else{
 								
-								SendKeys.SendWait("{"+massa+" 2}");
-								if(this.Element.getElemento().GetAttribute("value").Length>1){
-									this.Element.getElemento().SendKeys(OpenQA.Selenium.Keys.Backspace);
-									
-								}
-								this.Element.getElemento().SendKeys("");
+								return Util.status.warning;
 							}
+
+						}
+						else
+							this.Element.getElemento().SendKeys(massa);
+						
+					}
+					
+					else if (Metodo==MetodoOptions.Metodo.Insert){
+						this.Element.Elemento.SendKeys("");
+						TranferAreaCopy(massa);
+						
+						if (StartWebDriver.handle==GetForegroundWindow()){
+							SendKeys.SendWait("+{INS}");
 						}
 						else{
 							
 							return Util.status.warning;
 						}
-
+						
 					}
-					else
-						this.Element.getElemento().SendKeys(massa);
+
+					else if(Metodo==MetodoOptions.Metodo.CopiarEColar){
+						
+						this.Element.getElemento().SendKeys("");
+						TranferAreaCopy(massa);
+						if (StartWebDriver.handle==GetForegroundWindow()){
+							SendKeys.SendWait("^v");
+						}
+						else{
+							
+							return Util.status.warning;
+						}
+						
+					}
 					
+					return Util.status.pass;
+					//	return ValidaCampo(massa);
 				}
 				
-				else if (Metodo==MetodoOptions.Metodo.Insert){
-					this.Element.Elemento.SendKeys("");
-					TranferAreaCopy(massa);
-					
-					if (StartWebDriver.handle==GetForegroundWindow()){
-						SendKeys.SendWait("+{INS}");
-					}
-					else{
-						
-						return Util.status.warning;
-					}
-					
-				}
-
-				else if(Metodo==MetodoOptions.Metodo.CopiarEColar){
-					
-					this.Element.getElemento().SendKeys("");
-					TranferAreaCopy(massa);
-					if (StartWebDriver.handle==GetForegroundWindow()){
-						SendKeys.SendWait("^v");
-					}
-					else{
-						
-						return Util.status.warning;
-					}
-					
-				}
-				
-				if(validaSize)
-					return ValidaCampo(validaSize);
-				else
-					return ValidaCampo(validaSize,massa);
+				else return Util.status.warning;
 			}
-			
-			else return Util.status.warning;
+			catch(Exception){
+				return Util.status.fail;
+				
+			}
 		}
 		public bool FieldExist(){
-			RefreshObject();
-			return (this.Element.Elemento.Displayed && this.Element.Elemento.Enabled);
+			try{
+				RefreshObject();
+				return (this.Element.Elemento.Displayed && this.Element.Elemento.Enabled);
+			}
+			catch(Exception){
+				
+				return false;
+			}
 
 		}
 		
 		public Util.status FieldExist(int millsec){
 			Thread.Sleep(millsec);
 			try{
-			    RefreshObject();
-			    if(this.Element.getElemento().Displayed)
-				 return Util.status.pass;
-			    else
-			     return Util.status.fail;	
+				RefreshObject();
+				if(this.Element.getElemento().Displayed)
+					return Util.status.pass;
+				else
+					return Util.status.fail;
 			}
 			catch(Exception){
 				return Util.status.fail;
@@ -223,61 +232,9 @@ namespace SeleniumTest
 		}
 		
 		
-		public Util.status ValidaCampo(bool size,string massa=""){
-			
-			if(size){
-				if (this.Element.getElemento().GetAttribute("value").Length>this.Maxlenght) return  Util.status.fail;
-				else return Util.status.pass;
-			}
-			else{
-				
-				if(this.TypeField_=="other"){
-					//false significa que nao e valido porem aceitou a entrada
-					//true esta vazio ou é uma entradaValida
-					object entradaValida=	((IJavaScriptExecutor)this.Element.getContext(Util.StartWebDriver.getDriver())).ExecuteScript("return arguments[0].validity.valid",(IWebElement)this.Element.getElemento());
-					//caso o value esteja vazio e entradaValida esteja false(aceitou a letra 'e', o ',' ....) ....caso esteja true e true nao aceitou nada
-					bool valorCampo=this.Element.getElemento().GetAttribute("value").Equals("");
-					
-					if((bool)entradaValida && valorCampo ){
-						return  Util.status.pass;
-					}
-					else if((bool)entradaValida && (!(valorCampo))){
-						return  Util.status.pass;
-					}
-					else if((!((bool)entradaValida)) && valorCampo){
-						return  Util.status.pass;
-					}
-					else if ((!((bool)entradaValida)) && (!(valorCampo)))
-						return  Util.status.fail;
-					else{
-						return  Util.status.fail;
-						
-					}
-				}
-				else{
-
-					if(CampoDeveriaAceitarEssaMassa(massa).Equals( Util.status.pass)){
-						if (this.Element.getElemento().GetAttribute("value").Contains(massa)){
-							return  Util.status.pass;
-						}
-						else{
-							return  Util.status.fail;
-						}
-					}
-					else{
-						if (this.Element.getElemento().GetAttribute("value").Contains(massa)){
-							return  Util.status.fail;
-						}
-						else{
-							
-							return  Util.status.pass;
-						}
-						
-					}
-				}
-			}
-			
-		}
+		
+		
+		
 		public Util.status CampoDeveriaAceitarEssaMassa(string massa){
 			if (string.Join("",TypeField.GetArrayType(this.TypeField_)).Contains(massa))
 				return  Util.status.pass;
@@ -319,7 +276,7 @@ namespace SeleniumTest
 		public  Util.status Click(){
 			
 			try{
-				FieldExist();
+		//		FieldExist();
 				this.Element.getElemento().Click();
 				return Util.status.pass;
 			}
@@ -422,9 +379,9 @@ namespace SeleniumTest
 			
 			try{
 				var url_=new UriBuilder(URL).Uri.ToString();
-			    Util.StartWebDriver.getDriver().Url=url_;
+				Util.StartWebDriver.getDriver().Url=url_;
 				Util.StartWebDriver.driver.Navigate();
-		
+				
 				return Util.status.pass;
 			}
 			catch(Exception){
@@ -452,8 +409,8 @@ namespace SeleniumTest
 				var cred=credencial.Split(',');
 				
 				WebDriverWait wait = new WebDriverWait(Util.StartWebDriver.getDriver(), TimeSpan.FromSeconds(10));
-					IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());     
-					alert.SetAuthenticationCredentials(cred[0], cred[1]);
+				IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
+				alert.SetAuthenticationCredentials(cred[0], cred[1]);
 				return Util.status.pass;
 			}
 			catch(Exception){
@@ -462,10 +419,10 @@ namespace SeleniumTest
 		}
 		
 		
-	   public  Util.status Maximize(){
+		public  Util.status Maximize(){
 			
 			try{
-					
+				
 				Util.StartWebDriver.getDriver().Manage().Window.Maximize();
 				return Util.status.pass;
 			}

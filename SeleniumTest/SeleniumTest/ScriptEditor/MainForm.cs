@@ -341,18 +341,18 @@ namespace SeleniumTest
 		void ExecutarToolStripMenuItemClick(object sender, EventArgs e)
 		{
 
-            if (caso[0].Steps.Count > 0)
-            {
-                EnableDisabledVisibleFormMain(false);
-                caso[0].createRun();
-                controlExecution controlfrm = new controlExecution(caso[0].LastRun);
-                controlfrm.MdiParent = this;
-                controlfrm.Show();
-                ControlForm = controlfrm;
-                Thread t = new Thread(new ThreadStart(this.executeThread));
-                t.Start();
+			if (caso[0].Steps.Count > 0)
+			{
+				EnableDisabledVisibleFormMain(false);
+				caso[0].createRun();
+				controlExecution controlfrm = new controlExecution(caso[0].LastRun);
+				controlfrm.MdiParent = this;
+				controlfrm.Show();
+				ControlForm = controlfrm;
+				Thread t = new Thread(new ThreadStart(this.executeThread));
+				t.Start();
 
-            }
+			}
 			
 		}
 		
@@ -360,9 +360,9 @@ namespace SeleniumTest
 		private  void executeThread(){
 
 
-       
-            caso[0].execute();
-            showSumary();
+			
+			caso[0].execute();
+			showSumary();
 			//chamo um objeto da form para fazer o invoke....gambiarraa purinha
 			dataGridCase.Invoke(new Action(() =>EnableDisabledVisibleFormMain(true)));
 		}
@@ -398,25 +398,37 @@ namespace SeleniumTest
 			
 		}
 
-        private void summaryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            showSumary();
-        }
+		private void summaryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			showSumary();
+		}
 
-        public void showSumary() {
+		public void showSumary() {
+			try{
+				if (!ReferenceEquals(caso[0].LastSumary, null))
+				{
 
-            if (!ReferenceEquals(caso[0].LastRun, null) && !ReferenceEquals(caso[0].LastRun.Reporter, null) && !ReferenceEquals(caso[0].LastRun.Reporter.report, null) && !ReferenceEquals(caso[0].LastRun.Reporter.report.htmlPath, null))
-            {
+					OpenQA.Selenium.IJavaScriptExecutor js = (OpenQA.Selenium.IJavaScriptExecutor)Util.StartWebDriver.getDriver();
+					js.ExecuteScript("window.open('file:///" + caso[0].LastSumary.Replace("\\", "/") + "');");
+					/// 
+					
+					Util.StartWebDriver.driver.SwitchTo().Window(Util.StartWebDriver.driver.WindowHandles[Util.StartWebDriver.driver.WindowHandles.Count-1]).Navigate().GoToUrl("file:///" + caso[0].LastSumary.Replace("\\", "/"));
+				}
+				else {
+					MessageBox.Show("Summary is empty...", "Warning", MessageBoxButtons.OK);
 
-                OpenQA.Selenium.IJavaScriptExecutor js = (OpenQA.Selenium.IJavaScriptExecutor)Util.StartWebDriver.getDriver();
-                js.ExecuteScript("window.open('" + caso[0].LastRun.Reporter.report.htmlPath.Replace("\\", "/") + "');");
-            }
-            else {
-                MessageBox.Show("Summary is empty...", "Warning", MessageBoxButtons.OK);
+				}
+			}catch(Exception){
+				MessageBox.Show("Try Again!", "Warning", MessageBoxButtons.OK);
+			}
 
-            }
-
-
-        }
-    }
+		}
+		
+		void MainFormClose(object sender, EventArgs e)
+		{
+			Util.StartWebDriver.driver.Quit();
+			Program.CloseAll();
+			
+		}
+	}
 }

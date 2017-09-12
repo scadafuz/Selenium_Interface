@@ -24,7 +24,7 @@ namespace SeleniumTest.Properties
 		public Step step;
 		public Evidencia(Step step)
 		{
-			this.ScreenBase64=((ITakesScreenshot)Util.StartWebDriver.driver).GetScreenshot().AsBase64EncodedString;
+			this.ScreenBase64=((ITakesScreenshot)Util.StartWebDriver.getDriver()).GetScreenshot().AsBase64EncodedString;
 			this.step=step;
 		}
 		//sempre lembrar de limpar pq  c nao vai abarrotar memoria

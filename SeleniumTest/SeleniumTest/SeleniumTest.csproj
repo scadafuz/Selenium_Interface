@@ -95,7 +95,6 @@
     <Compile Include="Sumarry\Report.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Control\controlExecution.resx">
       <DependentUpon>controlExecution.cs</DependentUpon>
