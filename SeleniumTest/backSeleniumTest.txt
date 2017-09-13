@@ -1,0 +1,67 @@
+/*
+ * Created by SharpDevelop.
+ * User: blopes
+ * Date: 27/04/2017
+ * Time: 13:56
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+using System;
+using System.Windows.Forms;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Chrome;
+using System.Timers;
+namespace SeleniumTest
+{
+	class Program
+	{
+		public static void Main(string[] args)
+		{
+			Console.WriteLine("SeleniumTest In!");
+			
+			
+			object Driver =new StartWebDriver();
+			
+				
+		
+			  
+			  
+			 // object  bugueira =System.TimeSpan(0,0,5);
+			//  WebDriverWait wait =new WebDriverWait(driver,new TimeSpan(5,0,5));
+			  	//Select URL
+			//  driver.Navigate().GoToUrl("http://10.205.108.100/prweb/PRServlet/");
+			  
+				//acercao
+		
+				
+				
+				
+			
+				
+				
+				
+				
+				
+				
+			//  IWebElement txtLogin=driver.FindElement(By.Id("txtUserID"));
+			 // IWebElement txtPass=driver.FindElement(By.Id("txtPassword"));
+			 // IWebElement btnLogin=driver.FindElement(By.Id("sub"));
+			  
+			 
+			  
+			 
+			  
+			  txtLogin.SendKeys("bruno.lopes");
+			  txtPass.SendKeys("rules");
+			  btnLogin.Click();
+			  
+			 // wait.Until(ExpectedConditions.ElementToBeClickable(driver.FindElement(By.XPath("//*[@id=\"menu-1493316714545\"]/li[1]/a/span/span)"))));
+			// TODO: Implement Functionality Here
+			
+			Console.Write("SeleniumTest Out");
+			Console.ReadKey(true);
+		}
+	}
+}
