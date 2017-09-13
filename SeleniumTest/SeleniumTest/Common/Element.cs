@@ -8,6 +8,9 @@
  */
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
@@ -32,6 +35,8 @@ namespace SeleniumTest
 		public string CSSSelector_;
 		public string xpath_id;
 		public string CSSSelector_id;
+		[XmlIgnore]
+		public ArrayList frameSequence_otherContext;
 		public Element(RemoteWebElement Elemento, ArrayList frameSequence,string WindowHandle)
 		{
 			this.frameSequence=frameSequence;
@@ -56,8 +61,17 @@ namespace SeleniumTest
 		//usado so pra mapear
 		public IWebDriver getContext(IWebDriver driver){
 			//coloquei esse forwach para verificar em todas as windows nao testei
+			
+			ArrayList frameSequence_atual;
+			if(!(ReferenceEquals(frameSequence_otherContext,null))){
+					frameSequence_atual=frameSequence_otherContext;
+			}
+			else{
+					frameSequence_atual=frameSequence;
+			}
+			
 			driver.SwitchTo().DefaultContent();
-			foreach(int i in frameSequence){
+			foreach(int i in frameSequence_atual){
 				try{
 					driver.SwitchTo().Frame(i);
 				}
@@ -67,45 +81,41 @@ namespace SeleniumTest
 			}
 			return driver;
 		}
+	
+		
+		
+		
+		
+		
 		public String GetElementCSSSelector(IWebElement element)
 		{
 			string saida="";
 			try{
 				saida= (String) ((IJavaScriptExecutor) Util.StartWebDriver.getDriver()).ExecuteScript(
-					" getCSSPath = function(el) {"+
-					"        if (!(el instanceof Element)) "+
-					"            return;"+
-					"        var path = [];"+
-					"        while (el.nodeType === Node.ELEMENT_NODE) {"+
-					"            var selector = el.nodeName.toLowerCase();"+
-					//"            if (el.id) {"+
-					//"                selector += '#' + el.id;"+
-					//"                path.unshift(selector);"+
-					//"                break;"+
-					//"            } else {"+
-					"                var sib = el, nth = 1;"+
-					"                while (sib = sib.previousElementSibling) {"+
-					"                    if (sib.nodeName.toLowerCase() == selector)"+
-					"                       nth++;"+
-					//	"                }"+
-					"                if (nth != 1)"+
-					"                    selector += ':nth-of-type('+nth+')';"+
-					"            }"+
-					"            path.unshift(selector);"+
-					"            el = el.parentNode;"+
-					"        }"+
-					"        return path.join(' > ');"+
-					"     };"+
-
-					"return getCSSPath(arguments[0]);", element);
+					
+					"getCSSPath_=function(el){"+
+					"var names = [];"+
+					" while (el.parentNode){"+
+					"      if (el==el.ownerDocument.documentElement) names.unshift(el.tagName);"+
+					"      else{"+
+					"        for (var c=1,e=el;e.previousElementSibling;e=e.previousElementSibling,c++);"+
+					"        names.unshift(el.tagName+':nth-child('+c+')');"+
+					"      }"+
+					"      el=el.parentNode;  "+
+					"  }"+
+					"  return names.join(' > ');"+
+					"};"+
+					"return getCSSPath_(arguments[0]);", element);
 				
 			}
 			catch(Exception ){
 				
 			}
-			return Regex.Replace(saida,".*> aside[^>]+>","");
+			return Regex.Replace(saida,".*> aside[^>]+>|.*> ASIDE[^>]+>","");
 		}
 		
+	
+
 		
 		
 		public String GetElementCSSSelectorID(IWebElement element)
@@ -113,39 +123,33 @@ namespace SeleniumTest
 			string saida="";
 			try{
 				saida= (String) ((IJavaScriptExecutor) Util.StartWebDriver.getDriver()).ExecuteScript(
-					" getCSSPath = function(el) {"+
-					"        if (!(el instanceof Element)) "+
-					"            return;"+
-					"        var path = [];"+
-					"        while (el.nodeType === Node.ELEMENT_NODE) {"+
-					"            var selector = el.nodeName.toLowerCase();"+
-					"            if (el.id) {"+
-					"                selector += '#' + el.id;"+
-					"                path.unshift(selector);"+
-					"                break;"+
-					"            } else {"+
-					"                var sib = el, nth = 1;"+
-					"                while (sib = sib.previousElementSibling) {"+
-					"                    if (sib.nodeName.toLowerCase() == selector)"+
-					"                       nth++;"+
-					"                }"+
-					"                if (nth != 1)"+
-					"                    selector += ':nth-of-type('+nth+')';"+
-					"            }"+
-					"            path.unshift(selector);"+
-					"            el = el.parentNode;"+
-					"        }"+
-					"        return path.join(' > ');"+
-					"     };"+
-
-					"return getCSSPath(arguments[0]);", element);
+					
+					"getCSSPath_=function(el){"+
+					"var names = [];"+
+					" while (el.parentNode){"+
+					 "if (el.id){"+
+				      "names.unshift('#'+el.id);"+
+				      "break;"+
+				      "}else{"+
+					"      if (el==el.ownerDocument.documentElement) names.unshift(el.tagName);"+
+					"      else{"+
+					"        for (var c=1,e=el;e.previousElementSibling;e=e.previousElementSibling,c++);"+
+					"        names.unshift(el.tagName+':nth-child('+c+')');"+
+					"      }"+
+					"      el=el.parentNode;  "+
+					"  }"+
+					"  }"+
+					"  return names.join(' > ');"+
+					"};"+
+					"return getCSSPath_(arguments[0]);", element);
 				
 			}
 			catch(Exception ){
 				
 			}
-			return Regex.Replace(saida,".*> aside[^>]+>","");
+			return Regex.Replace(saida,".*> aside[^>]+>|.*> ASIDE[^>]+>","");
 		}
+		
 		
 		public String GetElementXPath(IWebElement element)
 		{
@@ -153,7 +157,7 @@ namespace SeleniumTest
 			string saida="";
 			try{
 				saida= (String) ((IJavaScriptExecutor) Util.StartWebDriver.getDriver()).ExecuteScript(
-					"getXPath=function(node)" +
+					"getXPath_=function(node)" +
 					"{" +
 					//	"if (node.id !== '')" +
 					//	"{" +
@@ -185,7 +189,7 @@ namespace SeleniumTest
 					"}" +
 					"};" +
 					
-					"return getXPath(arguments[0]);", element);
+					"return getXPath_(arguments[0]);", element);
 				
 			}
 			catch(Exception ){
@@ -263,8 +267,14 @@ namespace SeleniumTest
 							this.Elemento= (RemoteWebElement)els[0];
 						}
 						else{
-							
-							throw new Exception("Elemento não encontrado");
+							List<RemoteWebElement> lstElementoQualquerContexto=new List<RemoteWebElement>();
+							lstElementoQualquerContexto=FindOtherContext(lstElementoQualquerContexto);
+							if(lstElementoQualquerContexto.Count>0){
+								return lstElementoQualquerContexto[0];
+							}
+							else{
+								throw new Exception("Elemento não encontrado");
+							}
 						}
 					}
 					else{
@@ -277,6 +287,48 @@ namespace SeleniumTest
 			}
 			
 			return this.Elemento;
+		}
+		
+		
+		
+		public List<RemoteWebElement> FindOtherContext(List<RemoteWebElement> saida,ArrayList arrayFrame=null){
+			if(saida.Count>0){
+				return saida;
+			}
+			IWebDriver driver=Util.StartWebDriver.driver;
+			if(object.ReferenceEquals(null,arrayFrame)){
+				driver.SwitchTo().DefaultContent();
+				arrayFrame=new ArrayList();
+				
+			}
+			
+			var framesNormal=driver.FindElements(By.TagName("frame"));
+			var iframe=driver.FindElements(By.TagName("iframe"));
+			var frames=framesNormal.Concat(iframe).ToList();
+			
+
+			
+			var listEleTagName=driver.FindElements(By.CssSelector(this.CSSSelector_));
+			
+			foreach(RemoteWebElement e in listEleTagName){
+				saida.Add(e);
+				frameSequence_otherContext=(ArrayList)arrayFrame.Clone();
+				return saida;
+				break;
+			}
+			for(int i=0;i<frames.Count;i++){
+				
+				arrayFrame.Add(i);
+				try{
+					driver.SwitchTo().Frame(i);
+					FindOtherContext(saida,arrayFrame);
+				}
+				catch(Exception){}
+				arrayFrame.RemoveAt(arrayFrame.Count-1);
+				driver.SwitchTo().ParentFrame();
+			}
+			return 	saida;
+			
 		}
 		
 	}

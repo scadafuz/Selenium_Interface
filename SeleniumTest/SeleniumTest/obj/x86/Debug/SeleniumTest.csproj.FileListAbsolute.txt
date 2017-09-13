@@ -43,3 +43,13 @@ C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\x86\Debug\Se
 C:\Users\bruno\Desktop\SeleniumTestRE\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.Properties.Resources.resources
 C:\Users\blopes\Desktop\TestSelenium\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.controlExecution.resources
 C:\Users\blopes\Desktop\TestSelenium\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.Properties.Resources.resources
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\bin\Debug\SeleniumTest.exe
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\bin\Debug\SeleniumTest.pdb
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.csprojResolveAssemblyReference.cache
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.controlExecution.resources
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.Properties.Resources.resources
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.MainForm.resources
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.SearchObject.resources
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.csproj.GenerateResource.Cache
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.exe
+C:\Users\blopes\Desktop\SeleniumGit\SeleniumTest\SeleniumTest\obj\x86\Debug\SeleniumTest.pdb

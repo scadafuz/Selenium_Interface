@@ -202,7 +202,7 @@ namespace SeleniumTest
 				bool achou=Util.StartWebDriver.highLight(elem.Element);
 				if(!achou){
 					
-					MessageBox.Show("Objeto não encontrado","Atenção",MessageBoxButtons.OK);
+					MessageBox.Show("Objeto não encontrado","Warning",MessageBoxButtons.OK);
 				}
 				
 				
@@ -340,20 +340,25 @@ namespace SeleniumTest
 		
 		void ExecutarToolStripMenuItemClick(object sender, EventArgs e)
 		{
-
-			if (caso[0].Steps.Count > 0)
-			{
-				EnableDisabledVisibleFormMain(false);
-				caso[0].createRun();
-				controlExecution controlfrm = new controlExecution(caso[0].LastRun);
-				controlfrm.MdiParent = this;
-				controlfrm.Show();
-				ControlForm = controlfrm;
-				Thread t = new Thread(new ThreadStart(this.executeThread));
-				t.Start();
-
+			try{
+				if (caso[0].Steps.Count > 0)
+				{
+					EnableDisabledVisibleFormMain(false);
+					caso[0].createRun();
+					controlExecution controlfrm = new controlExecution(caso[0].LastRun);
+					controlfrm.MdiParent = this;
+					controlfrm.Show();
+					ControlForm = controlfrm;
+					Thread t = new Thread(new ThreadStart(this.executeThread));
+					t.Start();
+	
+				}
 			}
+			catch(Exception ee){
+				Util.StartWebDriver.getDriver();
+				MessageBox.Show("Tente executar novamente!","Warning",MessageBoxButtons.OK);
 			
+			}
 		}
 		
 		
