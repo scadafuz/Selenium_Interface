@@ -61,7 +61,7 @@ namespace SeleniumTest
 		//usado so pra mapear
 		public IWebDriver getContext(IWebDriver driver){
 			//coloquei esse forwach para verificar em todas as windows nao testei
-			
+		
 			ArrayList frameSequence_atual;
 			if(!(ReferenceEquals(frameSequence_otherContext,null))){
 					frameSequence_atual=frameSequence_otherContext;

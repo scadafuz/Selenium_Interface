@@ -351,13 +351,14 @@ namespace SeleniumTest
 					ControlForm = controlfrm;
 					Thread t = new Thread(new ThreadStart(this.executeThread));
 					t.Start();
-	
+					
 				}
 			}
 			catch(Exception ee){
+				dataGridCase.Invoke(new Action(() =>EnableDisabledVisibleFormMain(true)));
 				Util.StartWebDriver.getDriver();
 				MessageBox.Show("Tente executar novamente!","Warning",MessageBoxButtons.OK);
-			
+				
 			}
 		}
 		
@@ -365,11 +366,19 @@ namespace SeleniumTest
 		private  void executeThread(){
 
 
-			
-			caso[0].execute();
-			showSumary();
-			//chamo um objeto da form para fazer o invoke....gambiarraa purinha
-			dataGridCase.Invoke(new Action(() =>EnableDisabledVisibleFormMain(true)));
+			try{
+				
+				caso[0].execute();
+				showSumary();
+				//chamo um objeto da form para fazer o invoke....gambiarraa purinha
+				dataGridCase.Invoke(new Action(() =>EnableDisabledVisibleFormMain(true)));
+			}
+			catch(Exception ee){
+				dataGridCase.Invoke(new Action(() =>EnableDisabledVisibleFormMain(true)));
+				Util.StartWebDriver.getDriver();
+				MessageBox.Show("Tente executar novamente, caso persista reinicie!","Warning",MessageBoxButtons.OK);
+				
+			}
 		}
 		
 		void dataGridCase_DragEnter(object sender, DragEventArgs e) {
@@ -405,7 +414,10 @@ namespace SeleniumTest
 
 		private void summaryToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			showSumary();
+			
+				showSumary();
+			
+			
 		}
 
 		public void showSumary() {
@@ -423,8 +435,10 @@ namespace SeleniumTest
 					MessageBox.Show("Summary is empty...", "Warning", MessageBoxButtons.OK);
 
 				}
-			}catch(Exception){
-				MessageBox.Show("Try Again!", "Warning", MessageBoxButtons.OK);
+			}
+			catch(Exception ee){
+				
+			
 			}
 
 		}

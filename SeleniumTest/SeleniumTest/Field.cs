@@ -206,11 +206,26 @@ namespace SeleniumTest
 			}
 		}
 		public bool FieldExist(){
+		
+
 			try{
 				RefreshObject();
 				return (this.Element.Elemento.Displayed && this.Element.Elemento.Enabled);
 			}
-			catch(Exception){
+			catch(Exception ee){
+				
+				foreach(string x in	Util.StartWebDriver.driver.WindowHandles){
+					try{
+						Util.StartWebDriver.driver.SwitchTo().Window(x);
+						RefreshObject();
+					    return (this.Element.Elemento.Displayed && this.Element.Elemento.Enabled);
+					}
+					catch(Exception eee){
+					
+					
+					}
+				}
+	
 				
 				return false;
 			}
@@ -295,12 +310,24 @@ namespace SeleniumTest
 				SelectElement dropdown = new SelectElement(this.Element.getElemento());
 				dropdown.SelectByText(SelectText);
 				return Util.status.pass;
+				
 			}
-			catch(Exception){
-				return Util.status.fail;
+			catch(Exception){	
+				try{
+					FieldExist();
+					Actions sendKeyAction= new Actions(Util.StartWebDriver.driver);
+					this.Element.getElemento().Click();
+					this.Element.getElemento().SendKeys(SelectText);
+				
+					
+					return Util.status.pass;
+				
+				}catch(Exception ee){
+				
+				    return Util.status.fail;
+				}
+
 			}
-			
-			
 		}
 		public  Util.status CheckBox(string SelectText){
 			
